@@ -1,0 +1,16 @@
+{
+  "geofences": [
+    {
+      "lon": 76.883343,
+      "id": "Infosys TVM SEZ",
+      "radius": 500,
+      "lat": 8.533512
+    },
+    {
+      "lon": 76.880744,
+      "id": "Infosys TVM TechnoPark",
+      "radius": 500,
+      "lat": 8.558096
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eff4ff"
+    android:orientation="vertical">
+<LinearLayout android:orientation="horizontal"
+    android:layout_width="match_parent" android:weightSum="100"
+    android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="85"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        >
+
+        <TextView android:layout_margin="10dip"
+            android:id="@+id/locationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="20dip"
+            android:text="Infosys SEZ"
+            android:textStyle="bold" />
+
+        <TextView android:layout_margin="5dip"
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="16dip"
+            android:text="Lat: 83.9999999999999'"/>
+
+        <TextView android:layout_margin="5dip"
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="16dip"
+            android:text="Long: 83.9999999999999'"/>
+
+        <TextView android:layout_margin="10dip"
+            android:id="@+id/radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="16dip"
+            android:text="100m" />
+    </LinearLayout>
+    <Button android:id="@+id/btnRemove"
+        android:layout_width="0dp" android:layout_weight="15"
+        android:layout_height="wrap_content" android:text="Remove" />
+</LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@android:color/black"
+        android:minHeight="1dip"></View>
+</LinearLayout>

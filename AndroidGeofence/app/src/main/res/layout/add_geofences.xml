@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2b5797"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="ADD A STORE"
+        android:textColor="@android:color/white"
+        android:textSize="26dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:text="Enter the geo-coordinates"
+        android:textColor="@android:color/white"
+        android:textSize="16dip" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:background="#eff4ff"
+        android:hint="Enter store name"
+        android:padding="10dip"
+        android:textSize="16dip" />
+
+
+    <EditText
+        android:id="@+id/editTextLatitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:background="#eff4ff"
+        android:hint="Enter the latitude"
+        android:padding="10dip"
+        android:textSize="16dip" />
+
+    <EditText
+        android:id="@+id/editTextLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:background="#eff4ff"
+        android:hint="Enter the longitude"
+        android:padding="10dip"
+        android:textSize="16dip" />
+
+    <EditText
+        android:id="@+id/editTextRadius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:background="#eff4ff"
+        android:hint="Enter the radius"
+        android:padding="10dip"
+        android:textSize="16dip" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dip"
+        android:background="#eff4ff"
+        android:text="ADD"
+        android:textSize="26dip"
+        android:textStyle="bold" />
+
+</LinearLayout>
