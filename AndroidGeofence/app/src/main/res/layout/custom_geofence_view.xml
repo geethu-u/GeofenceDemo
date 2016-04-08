@@ -9,7 +9,7 @@
     android:layout_height="match_parent">
     <LinearLayout android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_weight="85"
+        android:layout_weight="65"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         >
@@ -48,7 +48,7 @@
             android:text="100m" />
     </LinearLayout>
     <Button android:id="@+id/btnRemove"
-        android:layout_width="0dp" android:layout_weight="15"
+        android:layout_width="0dp" android:layout_weight="35"
         android:layout_height="wrap_content" android:text="Remove" />
 </LinearLayout>
 

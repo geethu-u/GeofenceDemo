@@ -1,5 +1,6 @@
 package com.example.geethu_u.androidgeofence.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.geethu_u.androidgeofence.R;
 import com.example.geethu_u.androidgeofence.geofence.GeofenceBean;
+import com.example.geethu_u.androidgeofence.geofence.GeofenceRequester;
+import com.example.geethu_u.androidgeofence.geofence.GeofenceUtils;
 
 import java.util.List;
 
@@ -17,7 +20,8 @@ import java.util.List;
  */
 
 public class ViewGeofenceAdapter extends RecyclerView.Adapter<ViewGeofenceAdapter.ViewHolder> {
-    private List<GeofenceBean.GeofenceObj> mGeofenceList;
+    private final Activity activity;
+    private final List<GeofenceBean.GeofenceObj> mGeofenceList;
 
     @Override
     public int getItemCount() {
@@ -29,8 +33,9 @@ public class ViewGeofenceAdapter extends RecyclerView.Adapter<ViewGeofenceAdapte
         return position;
     }
 
-    public ViewGeofenceAdapter(List<GeofenceBean.GeofenceObj> mGeofenceList) {
+    public ViewGeofenceAdapter(List<GeofenceBean.GeofenceObj> mGeofenceList, Activity activity) {
         this.mGeofenceList = mGeofenceList;
+        this.activity = activity;
     }
 
     @Override
@@ -38,7 +43,15 @@ public class ViewGeofenceAdapter extends RecyclerView.Adapter<ViewGeofenceAdapte
         ViewHolder holder;
         View vi = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.custom_geofence_view, null);
-        holder = new ViewHolder(vi);
+        holder = new ViewHolder(vi, new ViewHolder.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int pos) {
+                new GeofenceUtils().removeGeofence(activity, mGeofenceList.get(pos).id);
+                new GeofenceRequester(activity,"remove").removeGeofence(mGeofenceList.get(pos).id);
+                mGeofenceList.remove(pos);
+                notifyDataSetChanged();
+            }
+        });
 
         return holder;
     }
@@ -58,8 +71,19 @@ public class ViewGeofenceAdapter extends RecyclerView.Adapter<ViewGeofenceAdapte
         public TextView longitude;
         public TextView radius;
         public Button btnRemove;
+        public ItemClickListener mListener;
 
-        public ViewHolder(View itemView) {
+        public interface ItemClickListener {
+            void onItemClick(View view, int pos);
+        }
+        @Override
+        public void onClick(View view) {
+            if(view==btnRemove) {
+                int itemPosition = getAdapterPosition();
+                mListener.onItemClick(view, itemPosition);
+            }
+        }
+        public ViewHolder(View itemView, ItemClickListener listener) {
             super(itemView);
             locationText = (TextView) itemView.findViewById(R.id.locationText);
             latitude = (TextView) itemView.findViewById(R.id.latitude);
@@ -67,13 +91,8 @@ public class ViewGeofenceAdapter extends RecyclerView.Adapter<ViewGeofenceAdapte
             radius = (TextView) itemView.findViewById(R.id.radius);
             btnRemove= (Button)itemView.findViewById(R.id.btnRemove);
             btnRemove.setOnClickListener(this);
+            mListener = listener;
         }
 
-        @Override
-        public void onClick(View v) {
-            if(v==btnRemove){
-
-            }
-        }
     }
 }

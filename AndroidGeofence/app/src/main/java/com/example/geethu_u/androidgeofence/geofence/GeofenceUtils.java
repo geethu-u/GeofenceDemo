@@ -73,10 +73,12 @@ public class GeofenceUtils {
 
         GeofenceBean bean = new Gson().fromJson(savedGeofences, GeofenceBean.class);
         this.geofenceBean = bean;
-        for (GeofenceBean.GeofenceObj obj : bean.geofences) {
-            geofences.add(buildGeofence(obj.id,
-                    Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT,
-                    Double.valueOf(obj.lat), Double.valueOf(obj.lon), Integer.valueOf(obj.radius), Geofence.NEVER_EXPIRE));
+        if(bean !=null) {
+            for (GeofenceBean.GeofenceObj obj : bean.geofences) {
+                geofences.add(buildGeofence(obj.id,
+                        Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT,
+                        Double.valueOf(obj.lat), Double.valueOf(obj.lon), Integer.valueOf(obj.radius), Geofence.NEVER_EXPIRE));
+            }
         }
         return geofences;
     }
@@ -96,6 +98,21 @@ public class GeofenceUtils {
         GeofenceBean bean = gson.fromJson(savedGeofences, GeofenceBean.class);
         GeofenceBean.GeofenceObj obj = new GeofenceBean().new GeofenceObj(name ,lat,lon,radius);
         bean.geofences.add(obj);
+        this.geofenceBean = bean;
+        savedGeofences = gson.toJson(bean);
+        mSharedPreferences.edit().putString(Constants.SAVED_GEOFENCES, savedGeofences).apply();
+    }
+    public void removeGeofence(Activity activity,String name){
+
+        String savedGeofences = getmSharedPreferences(activity).getString(Constants.SAVED_GEOFENCES, null);
+        Gson gson = new Gson();
+        GeofenceBean bean = gson.fromJson(savedGeofences, GeofenceBean.class);
+        for(int i=0; i<bean.geofences.size();i++){
+            GeofenceBean.GeofenceObj obj = bean.geofences.get(i);
+            if(obj.id.equals(name)){
+                bean.geofences.remove(obj);
+            }
+        }
         this.geofenceBean = bean;
         savedGeofences = gson.toJson(bean);
         mSharedPreferences.edit().putString(Constants.SAVED_GEOFENCES, savedGeofences).apply();

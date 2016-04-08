@@ -70,6 +70,7 @@
                 android:id="@+id/addButton"
                 android:layout_width="0dp"
                 android:layout_weight="50"
+                android:layout_marginRight="10dip"
                 android:layout_height="match_parent"
                 android:background="@android:color/holo_green_light"
                 android:textColor="@android:color/white"

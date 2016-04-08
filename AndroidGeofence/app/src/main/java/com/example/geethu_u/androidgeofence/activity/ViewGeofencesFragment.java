@@ -32,8 +32,10 @@ public class ViewGeofencesFragment extends Fragment{
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         geofenceslist.setLayoutManager(linearLayoutManager);
         util = new GeofenceUtils();
-        ViewGeofenceAdapter adapter = new ViewGeofenceAdapter(util.getGeofenceUIList().geofences);
-        geofenceslist.setAdapter(adapter);
+        if(util.getGeofenceUIList()!=null) {
+            ViewGeofenceAdapter adapter = new ViewGeofenceAdapter(util.getGeofenceUIList().geofences, getActivity());
+            geofenceslist.setAdapter(adapter);
+        }
         return v;
     }
 }

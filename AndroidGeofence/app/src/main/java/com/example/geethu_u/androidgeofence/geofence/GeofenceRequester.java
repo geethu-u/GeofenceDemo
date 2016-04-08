@@ -1,13 +1,7 @@
 package com.example.geethu_u.androidgeofence.geofence;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,13 +10,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.location.LocationManager.*;
 
 
 /**
@@ -58,8 +49,10 @@ public class GeofenceRequester implements
      */
     private boolean mInProgress;
     private GeoFenceHelper helper;
+    private String action;
+    private List<String> ids;
 
-    public GeofenceRequester(Activity activityContext) {
+    public GeofenceRequester(Activity activityContext,String action) {
         // Save the context
         mActivity = activityContext;
         // Initialize the globals to null
@@ -67,6 +60,7 @@ public class GeofenceRequester implements
         googleApiClient = null;
         mInProgress = false;
         helper = new GeoFenceHelper();
+        this.action = action;
     }
 
     /**
@@ -143,6 +137,36 @@ public class GeofenceRequester implements
         }
     }
 
+    public void removeGeofence(String id ) {
+                /*
+         * Save the geofences so that they can be sent to Location Services once the
+         * connection is available.
+         */
+        // If a request is not already in progress
+        if (!mInProgress) {
+            // Toggle the flag and continue
+            mInProgress = true;
+            ids = new ArrayList<>();
+            ids.add(id);
+            // Request a connection to Location Services
+            requestConnection();
+            // If a request is in progress
+        } else {
+            // Throw an exception and stop the request
+            throw new UnsupportedOperationException();
+        }
+
+    }
+    /**
+     * Once the connection is available, send a request to add the Geofences
+     */
+    private void continueRemoveGeofences() {
+
+        LocationServices.GeofencingApi.removeGeofences(
+                googleApiClient,
+                ids
+        ).setResultCallback(this); // Result processed in onResult().
+    }
     /**
      * Returns the current PendingIntent to the caller.
      *
@@ -163,7 +187,7 @@ public class GeofenceRequester implements
     /**
      * Get a location client and disconnect from Location Services
      */
-    private void requestDisconnection() {
+    public void requestDisconnection() {
         // A request is no longer in progress
         mInProgress = false;
         getLocationClient().disconnect();
@@ -181,53 +205,13 @@ public class GeofenceRequester implements
      */
     public void onResult(Status status) {
         if (status.isSuccess()) {
-            // Update state and save in shared preferences.
-//            if (mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for Activity#requestPermissions for more details.
-//                return;
-//            }
-
-            ((LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE)).requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-
-
-        }
-
-
-            // Update the UI. Adding geofences enables the Remove Geofences button, and removing
-            // geofences enables the Add Geofences button.
-            // setButtonsEnabledState();
+            Log.d("GeoFenceRequester", " success_on result " + action);
 
 //            Toast.makeText(
 //                    mActivity,mActivity. getString(R.string.geofences_added ),
 //                    Toast.LENGTH_SHORT
 //            ).show();
-         else {
+        } else {
             // Get the status code for the error and log it using a user-friendly message.
             String errorMessage = GeofenceErrorMessages.getErrorString(mActivity,
                     status.getStatusCode());
@@ -244,8 +228,12 @@ public class GeofenceRequester implements
     public void onConnected(Bundle arg0) {
         // If debugging, log the connection
         Log.d(TAG, "Connected");
-        // Continue adding the geofences
-        continueAddGeofences();
+        if(action.equals("add")) {
+            // Continue adding the geofences
+            continueAddGeofences();
+        }else{
+            continueRemoveGeofences();
+        }
     }
     /*
      * Implementation of OnConnectionFailedListener.onConnectionFailed

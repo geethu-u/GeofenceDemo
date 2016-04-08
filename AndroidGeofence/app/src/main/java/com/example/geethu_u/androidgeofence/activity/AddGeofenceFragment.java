@@ -85,7 +85,7 @@ public class AddGeofenceFragment extends Fragment implements View.OnClickListene
                             Geofence.NEVER_EXPIRE);
                     utility.saveGeofences(mBaseactivity, latitude, longitude, radius, name);
                     mGeofenceList.add(geofence);
-                    new GeofenceRequester(mBaseactivity).addGeofences(mGeofenceList);
+                    new GeofenceRequester(mBaseactivity,"add").addGeofences(mGeofenceList);
                     mBaseactivity.findViewById(R.id.addLayout).setVisibility(View.GONE);
                     mBaseactivity.findViewById(R.id.activityLogLayout).setVisibility(View.VISIBLE);                }
         }

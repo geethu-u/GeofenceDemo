@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             setAdapter();
         }
 
-        mGeofenceRequester = new GeofenceRequester(this);
+        mGeofenceRequester = new GeofenceRequester(this,"add");
         mGeofenceList = (ArrayList<Geofence>) utils.getSavedGeofences(this);
         mGeofenceRequester.addGeofences(mGeofenceList);
 
@@ -79,6 +79,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mIntentFilter.addAction(Constants.GEOFENCE_EVENT);
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .registerReceiver(mBroadcastReceiver, mIntentFilter);
+
     }
 
     public void setAdapter() {
@@ -88,7 +89,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.GEOFENCE_EVENT));
+
+      registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.GEOFENCE_EVENT));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGeofenceRequester.requestDisconnection();
+        unregisterReceiver(mBroadcastReceiver);
+
     }
 
     @Override
